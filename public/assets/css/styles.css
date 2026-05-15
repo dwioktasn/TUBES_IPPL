@@ -211,6 +211,7 @@ a {
 
 /* LAYOUT & CONTAINERS */
 .container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
@@ -529,6 +530,11 @@ textarea.form-control {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+@media (min-width: 1200px) {
+    .events-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 
 .event-card {
     background: var(--white);
@@ -547,10 +553,10 @@ textarea.form-control {
 
 .event-poster {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    aspect-ratio: 4 / 5;
     background-color: #E5E7EB;
     position: relative;
+    overflow: hidden;
 }
 
 .event-tags-top {
@@ -601,13 +607,19 @@ textarea.form-control {
     color: var(--text-dark);
     margin-bottom: 16px;
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.1rem * 1.4 * 2);
 }
 
 .event-meta {
-    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 16px;
 }
 .event-meta-item {
     display: flex;

@@ -16,17 +16,19 @@
     <main class="container" style="width: 100%; max-width: 960px; margin: 40px auto; background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid #E5E7EB; overflow: hidden; padding: 0;">
         
         <!-- Poster Section -->
-        <div style="position: relative; width: 100%; height: 320px; background: #e5e7eb;">
-            <img src="{{ $event->poster ? asset('storage/' . $event->poster) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }}" style="width: 100%; height: 100%; object-fit: cover;">
-            <div style="position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
-                @if($event->is_tak)
-                    <span class="tag-badge tag-tak" style="padding: 6px 16px; font-size: 0.8rem;">TAK</span>
-                @endif
-                @if($event->price_type === 'gratis')
-                    <span class="tag-badge tag-gratis" style="padding: 6px 16px; font-size: 0.8rem;">GRATIS</span>
-                @else
-                    <span class="tag-badge tag-berbayar" style="padding: 6px 16px; font-size: 0.8rem;">BERBAYAR</span>
-                @endif
+        <div style="background: #F3F4F6; width: 100%; display: flex; justify-content: center; align-items: center;">
+            <div style="position: relative; width: 100%; max-width: 400px; aspect-ratio: 3 / 4; background: #e5e7eb;">
+                <img src="{{ $event->poster ? asset('storage/' . $event->poster) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }}" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+                    @if($event->is_tak)
+                        <span class="tag-badge tag-tak" style="padding: 6px 16px; font-size: 0.8rem;">TAK</span>
+                    @endif
+                    @if($event->price_type === 'gratis')
+                        <span class="tag-badge tag-gratis" style="padding: 6px 16px; font-size: 0.8rem;">GRATIS</span>
+                    @else
+                        <span class="tag-badge tag-berbayar" style="padding: 6px 16px; font-size: 0.8rem;">BERBAYAR</span>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -34,7 +36,17 @@
         <div style="padding: 32px;">
             <!-- Header -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px;">
-                <h1 style="font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.3;">{{ $event->title }}</h1>
+                <div>
+                    @if($event->prodi)
+                    <div style="margin-bottom: 12px;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            Khusus Prodi {{ $event->prodi }}
+                        </span>
+                    </div>
+                    @endif
+                    <h1 style="font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.3;">{{ $event->title }}</h1>
+                </div>
                 <button class="btn" style="background: #F1F5F9; color: #374151; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; gap: 6px;" onclick="navigator.clipboard.writeText(window.location.href); alert('Tautan disalin!')">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                     Bagikan
@@ -76,6 +88,9 @@
                     <div>
                         <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">Target Peserta</div>
                         <div style="font-weight: 500; color: #111827; font-size: 0.9rem;">{{ $event->target_participants }}</div>
+                        @if($event->prodi)
+                        <div style="font-size: 0.8rem; color: #DC2626; margin-top: 2px; font-weight: 600;">Khusus {{ $event->prodi }}</div>
+                        @endif
                     </div>
                 </div>
             </div>

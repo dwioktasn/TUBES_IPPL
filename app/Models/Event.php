@@ -11,6 +11,7 @@ class Event extends Model
         'slug',
         'description',
         'category',
+        'prodi',
         'event_type',
         'event_date',
         'location',

@@ -44,6 +44,8 @@ class EventController extends Controller
 
             'category' => $request->category,
 
+            'prodi' => $request->prodi,
+
             'event_type' => $request->event_type,
 
             'event_date' => $request->event_date,

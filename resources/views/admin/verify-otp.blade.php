@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - TelU Events</title>
+    <title>Verifikasi OTP - TelU Events</title>
 
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 
@@ -56,6 +56,20 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
+
+        .otp-input {
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            font-weight: bold;
+        }
+
+        .otp-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -64,8 +78,12 @@
     <div class="login-card">
 
         <div class="login-title">
-            <h1>TelU <span>Events</span></h1>
-            <p>Admin Dashboard</p>
+            <h1>Verifikasi <span>OTP</span></h1>
+            <p>Masukkan kode OTP yang dikirim ke email</p>
+        </div>
+
+        <div class="otp-info">
+            OTP dikirim ke: <b>{{ $email }}</b>
         </div>
 
         @if (session('error'))
@@ -74,22 +92,25 @@
             </div>
         @endif
 
-        <form action="/admin/send-otp" method="POST">
-        @csrf
+        <form action="/admin/verify-otp" method="POST">
+            @csrf
+
+            <input type="hidden" name="email" value="{{ $email }}">
 
             <div class="form-group">
-                <label class="form-label">Email Admin</label>
+                <label class="form-label">Kode OTP</label>
 
                 <input 
-                    type="email"
-                    name="email"
-                    class="form-control"
+                    type="text"
+                    name="otp"
+                    class="form-control otp-input"
+                    maxlength="6"
                     required
                 >
             </div>
 
             <button type="submit" class="btn-login">
-                Kirim OTP
+                Verifikasi OTP
             </button>
         </form>
 

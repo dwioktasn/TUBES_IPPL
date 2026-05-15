@@ -15,6 +15,9 @@
     <!-- NAVBAR -->
     @include('components.navbar')
 
+    <!-- FORM FILTER -->
+    <form id="searchForm" action="{{ route('home') }}" method="GET" style="display: none;"></form>
+
     <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-content">
@@ -24,7 +27,9 @@
                     stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
 
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    <path d="M22 10L12 5 2 10l10 5 10-5z"/>
+                    <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/>
+                    <path d="M22 10v6"/>
 
                 </svg>
 
@@ -61,7 +66,11 @@
 
                 <input type="text"
                     class="search-input"
-                    placeholder="Cari event...">
+                    name="search"
+                    form="searchForm"
+                    value="{{ request('search') }}"
+                    placeholder="Cari event..."
+                    onkeypress="if(event.key === 'Enter') document.getElementById('searchForm').submit();">
 
             </div>
         </div>
@@ -95,17 +104,36 @@
 
             <div class="filters-bar" style="margin-bottom: 0;">
 
-                <select class="filter-select">
+                <select class="filter-select" name="category" form="searchForm" onchange="document.getElementById('searchForm').submit();">
                     <option value="">Semua Kategori</option>
-                    <option value="seminar">Seminar</option>
-                    <option value="workshop">Workshop</option>
-                    <option value="kompetisi">Kompetisi</option>
+                    <option value="seminar" {{ request('category') == 'seminar' ? 'selected' : '' }}>Seminar</option>
+                    <option value="workshop" {{ request('category') == 'workshop' ? 'selected' : '' }}>Workshop</option>
+                    <option value="kompetisi" {{ request('category') == 'kompetisi' ? 'selected' : '' }}>Kompetisi</option>
                 </select>
 
-                <select class="filter-select">
-                    <option value="">Hybrid</option>
-                    <option value="online">Online</option>
-                    <option value="offline">Offline</option>
+                <select class="filter-select" name="event_type" form="searchForm" onchange="document.getElementById('searchForm').submit();">
+                    <option value="">Semua Tipe</option>
+                    <option value="online" {{ request('event_type') == 'online' ? 'selected' : '' }}>Online</option>
+                    <option value="offline" {{ request('event_type') == 'offline' ? 'selected' : '' }}>Offline</option>
+                    <option value="hybrid" {{ request('event_type') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+                </select>
+
+                <select class="filter-select" name="prodi" form="searchForm" onchange="document.getElementById('searchForm').submit();">
+                    <option value="">Semua Prodi</option>
+                    <option value="S1 Teknik Telekomunikasi" {{ request('prodi') == 'S1 Teknik Telekomunikasi' ? 'selected' : '' }}>S1 Teknik Telekomunikasi</option>
+                    <option value="S1 Teknik Elektro" {{ request('prodi') == 'S1 Teknik Elektro' ? 'selected' : '' }}>S1 Teknik Elektro</option>
+                    <option value="S1 Teknik Biomedis" {{ request('prodi') == 'S1 Teknik Biomedis' ? 'selected' : '' }}>S1 Teknik Biomedis</option>
+                    <option value="S1 Teknik Informatika" {{ request('prodi') == 'S1 Teknik Informatika' ? 'selected' : '' }}>S1 Teknik Informatika</option>
+                    <option value="S1 Rekayasa Perangkat Lunak (Software Engineering)" {{ request('prodi') == 'S1 Rekayasa Perangkat Lunak (Software Engineering)' ? 'selected' : '' }}>S1 Rekayasa Perangkat Lunak</option>
+                    <option value="S1 Sains Data" {{ request('prodi') == 'S1 Sains Data' ? 'selected' : '' }}>S1 Sains Data</option>
+                    <option value="S1 Teknik Industri" {{ request('prodi') == 'S1 Teknik Industri' ? 'selected' : '' }}>S1 Teknik Industri</option>
+                    <option value="S1 Sistem Informasi" {{ request('prodi') == 'S1 Sistem Informasi' ? 'selected' : '' }}>S1 Sistem Informasi</option>
+                    <option value="S1 Teknik Logistik" {{ request('prodi') == 'S1 Teknik Logistik' ? 'selected' : '' }}>S1 Teknik Logistik</option>
+                    <option value="S1 Teknologi Pangan" {{ request('prodi') == 'S1 Teknologi Pangan' ? 'selected' : '' }}>S1 Teknologi Pangan</option>
+                    <option value="S1 Desain Komunikasi Visual" {{ request('prodi') == 'S1 Desain Komunikasi Visual' ? 'selected' : '' }}>S1 Desain Komunikasi Visual</option>
+                    <option value="S1 Desain Produk" {{ request('prodi') == 'S1 Desain Produk' ? 'selected' : '' }}>S1 Desain Produk</option>
+                    <option value="S1 Bisnis Digital" {{ request('prodi') == 'S1 Bisnis Digital' ? 'selected' : '' }}>S1 Bisnis Digital</option>
+                    <option value="D3 Teknik Telekomunikasi" {{ request('prodi') == 'D3 Teknik Telekomunikasi' ? 'selected' : '' }}>D3 Teknik Telekomunikasi</option>
                 </select>
 
             </div>
@@ -163,17 +191,27 @@
                                 @else
                                     <span class="tag-badge tag-berbayar">BERBAYAR</span>
                                 @endif
+
                             </div>
                         </div>
 
                         <div class="event-body">
-                            <div class="event-category">
+                            <div class="event-category" style="margin-bottom: 8px;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                     <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                 </svg>
                                 {{ ucfirst($event->category) }}
                             </div>
+
+                            @if($event->prodi)
+                            <div style="margin-bottom: 12px;">
+                                <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                    Khusus Prodi {{ $event->prodi }}
+                                </span>
+                            </div>
+                            @endif
 
                             <h3 class="event-title">
                                 {{ $event->title }}
@@ -204,15 +242,15 @@
                                     </svg>
                                     {{ ucfirst($event->event_type) }}
                                 </div>
-                                @if($event->price_type === 'berbayar' && $event->price)
                                 <div class="event-meta-item">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <line x1="12" y1="1" x2="12" y2="23"></line>
                                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                                     </svg>
-                                    {{ $event->price }}
+                                    <span style="{{ $event->price_type === 'gratis' ? 'color: #10B981; font-weight: 600;' : '' }}">
+                                        {{ $event->price_type === 'gratis' ? 'Gratis' : $event->price }}
+                                    </span>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>

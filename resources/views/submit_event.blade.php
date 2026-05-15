@@ -126,6 +126,32 @@
 
             </div>
 
+            <div class="form-group">
+
+                <label class="form-label">
+                    Khusus Prodi (Opsional)
+                </label>
+
+                <select name="prodi" class="form-control">
+                    <option value="">Tidak ada (Untuk Umum/Semua Prodi)</option>
+                    <option value="S1 Teknik Telekomunikasi">S1 Teknik Telekomunikasi</option>
+                    <option value="S1 Teknik Elektro">S1 Teknik Elektro</option>
+                    <option value="S1 Teknik Biomedis">S1 Teknik Biomedis</option>
+                    <option value="S1 Teknik Informatika">S1 Teknik Informatika</option>
+                    <option value="S1 Rekayasa Perangkat Lunak (Software Engineering)">S1 Rekayasa Perangkat Lunak</option>
+                    <option value="S1 Sains Data">S1 Sains Data</option>
+                    <option value="S1 Teknik Industri">S1 Teknik Industri</option>
+                    <option value="S1 Sistem Informasi">S1 Sistem Informasi</option>
+                    <option value="S1 Teknik Logistik">S1 Teknik Logistik</option>
+                    <option value="S1 Teknologi Pangan">S1 Teknologi Pangan</option>
+                    <option value="S1 Desain Komunikasi Visual">S1 Desain Komunikasi Visual</option>
+                    <option value="S1 Desain Produk">S1 Desain Produk</option>
+                    <option value="S1 Bisnis Digital">S1 Bisnis Digital</option>
+                    <option value="D3 Teknik Telekomunikasi">D3 Teknik Telekomunikasi</option>
+                </select>
+
+            </div>
+
             <div class="form-grid">
 
                 <div class="form-group">
