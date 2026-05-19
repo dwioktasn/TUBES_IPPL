@@ -138,7 +138,9 @@ class AdminController extends Controller
         }
 
         // Urutkan terbaru
-        $events = $query->latest()->get();
+        $events = $query->latest()->get()->sortBy(function($event) {
+            return \Carbon\Carbon::parse($event->event_date)->isPast() ? 1 : 0;
+        })->values();
 
         $pendingCount = Event::where('status', 'pending')->count();
         $verifiedCount = Event::where('status', 'approved')->count();

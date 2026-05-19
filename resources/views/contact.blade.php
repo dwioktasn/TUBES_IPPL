@@ -26,18 +26,30 @@
         <!-- LEFT: FORM -->
         <div class="form-section">
             <h2 class="page-title">Kirim Pesan</h2>
-            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Kirim pesan simulasi berhasil!');">
+
+            @if(session('success'))
+            <div style="background-color: #ECFDF5; color: #065F46; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #A7F3D0; display: flex; align-items: center; gap: 12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span style="font-weight: 500;">{{ session('success') }}</span>
+            </div>
+            @endif
+
+            <form action="{{ route('contact.send') }}" method="POST">
+                @csrf
                 <div class="form-group">
                     <label class="form-label" for="name">Nama</label>
-                    <input type="text" id="name" class="form-control" placeholder="Nama lengkap" required>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Nama lengkap" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" class="form-control" placeholder="email@student.telkomuniversity.ac.id" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="email@student.telkomuniversity.ac.id" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="message">Pesan</label>
-                    <textarea id="message" class="form-control" placeholder="Tulis pesan Anda..." required></textarea>
+                    <textarea id="message" name="message" class="form-control" placeholder="Tulis pesan Anda..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -61,23 +73,7 @@
                 <span>teluevents@telkomuniversity.ac.id</span>
             </div>
 
-            <h3 style="margin: 24px 0 16px; font-size: 1.1rem;">Ikuti Kami</h3>
-            <div class="social-icons">
-                <a href="#" class="social-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                </a>
-                <a href="#" class="social-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                </a>
-            </div>
+
 
             <div class="card contact-info-item" style="margin-top: auto; align-items: flex-start; border: 1px solid var(--border-color); padding: 24px; background-color: var(--bg-light);">
                 <div>

@@ -16,10 +16,20 @@
     <main class="container" style="width: 100%; max-width: 960px; margin: 40px auto; background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid #E5E7EB; overflow: hidden; padding: 0;">
         
         <!-- Poster Section -->
-        <div style="background: #F3F4F6; width: 100%; display: flex; justify-content: center; align-items: center;">
+        @php
+            $isPast = \Carbon\Carbon::parse($event->event_date)->isPast();
+        @endphp
+        <div style="background: #F3F4F6; width: 100%; display: flex; justify-content: center; align-items: center; {{ $isPast ? 'filter: grayscale(60%);' : '' }}">
             <div style="position: relative; width: 100%; max-width: 400px; aspect-ratio: 3 / 4; background: #e5e7eb;">
                 <img src="{{ $event->poster ? asset('storage/' . $event->poster) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }}" style="width: 100%; height: 100%; object-fit: cover;">
-                <div style="position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+                
+                @if($isPast)
+                <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 5;">
+                    <div style="border: 3px solid rgba(255,255,255,0.9); color: rgba(255,255,255,0.9); padding: 12px 24px; font-weight: 800; font-size: 2rem; letter-spacing: 3px; transform: rotate(-15deg); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); text-shadow: 0 2px 4px rgba(0,0,0,0.5);">SELESAI</div>
+                </div>
+                @endif
+
+                <div style="position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; z-index: 10;">
                     @if($event->is_tak)
                         <span class="tag-badge tag-tak" style="padding: 6px 16px; font-size: 0.8rem;">TAK</span>
                     @endif

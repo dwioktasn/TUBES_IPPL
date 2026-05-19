@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewEventNotificationMail;
 
 class EventController extends Controller
 {
@@ -34,7 +37,7 @@ class EventController extends Controller
         }
 
         // 4. Simpan ke database
-        Event::create([
+        $event = Event::create([
 
             'title' => $request->title,
 
@@ -76,6 +79,12 @@ class EventController extends Controller
 
             'submitted_email' => 'guest@email.com',
         ]);
+
+        // 5. Kirim notifikasi email ke Admin
+        $admin = User::where('role', 'admin')->first();
+        if ($admin && $admin->email) {
+            Mail::to($admin->email)->send(new NewEventNotificationMail($event));
+        }
 
         return redirect('/')
             ->with('success', 'Event berhasil ditambahkan!');

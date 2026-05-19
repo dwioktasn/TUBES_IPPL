@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Event;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,9 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
         $query->where('prodi', $request->prodi);
     }
 
-    $events = $query->latest()->get();
+    $events = $query->latest()->get()->sortBy(function($event) {
+        return \Carbon\Carbon::parse($event->event_date)->isPast() ? 1 : 0;
+    })->values();
 
     return view('index', compact('events'));
 })->name('home');
@@ -53,6 +56,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 Route::get('/submit-event', function () {
     return view('submit_event');
 })->name('submit-event');
@@ -61,7 +66,8 @@ Route::post('/submit-event', [EventController::class, 'store'])
     ->name('events.store');
 
 // LOGIN ADMIN
-Route::get('/admin/login', [AdminController::class, 'login']);
+Route::get('/admin/login', [AdminController::class, 'login'])
+    ->name('admin.login');
 
 Route::post('/admin/send-otp', [AdminController::class, 'sendOtp']);
 
