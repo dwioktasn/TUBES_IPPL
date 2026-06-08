@@ -58,7 +58,7 @@
                     <h2>Mengapa Menggunakan TelU Events?</h2>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                <div class="about-features-grid">
                     <!-- Feature 1 -->
                     <div class="card" style="text-align: center; padding: 40px 24px; border: none; box-shadow: var(--shadow-sm); background-color: var(--white); border-radius: var(--radius-lg);">
                         <div class="about-icon" style="margin: 0 auto 20px;">

@@ -13,14 +13,14 @@
     @include('components.navbar')
 
     <!-- MAIN CONTENT -->
-    <main class="container" style="width: 100%; max-width: 960px; margin: 40px auto; background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid #E5E7EB; overflow: hidden; padding: 0;">
+    <main class="container detail-main">
         
         <!-- Poster Section -->
         @php
             $isPast = \Carbon\Carbon::parse($event->event_date)->isPast();
         @endphp
-        <div style="background: #F3F4F6; width: 100%; display: flex; justify-content: center; align-items: center; {{ $isPast ? 'filter: grayscale(60%);' : '' }}">
-            <div style="position: relative; width: 100%; max-width: 400px; aspect-ratio: 3 / 4; background: #e5e7eb;">
+        <div class="detail-poster-container" style="{{ $isPast ? 'filter: grayscale(60%);' : '' }}">
+            <div class="detail-poster-box">
                 <img src="{{ $event->poster ? asset('storage/' . $event->poster) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }}" style="width: 100%; height: 100%; object-fit: cover;">
                 
                 @if($isPast)
@@ -43,9 +43,9 @@
         </div>
 
         <!-- Content Section -->
-        <div style="padding: 32px;">
+        <div class="detail-content-section">
             <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px;">
+            <div class="detail-header-flex">
                 <div>
                     @if($event->prodi)
                     <div style="margin-bottom: 12px;">
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Grid Info -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+            <div class="detail-info-grid">
                 <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 2px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     <div>
@@ -162,7 +162,7 @@
 
             <!-- Daftar Button -->
             <div style="text-align: center;">
-                <a href="{{ str_starts_with($event->registration_link, 'http') ? $event->registration_link : 'http://' . $event->registration_link }}" target="_blank" class="btn btn-primary" style="background: #DC2626; padding: 12px 24px; font-size: 1rem; font-weight: 600; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; width: auto; min-width: 200px; gap: 8px;">
+                <a href="{{ str_starts_with($event->registration_link, 'http') ? $event->registration_link : 'http://' . $event->registration_link }}" target="_blank" class="btn btn-primary detail-register-btn">
                     Daftar Sekarang
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 </a>

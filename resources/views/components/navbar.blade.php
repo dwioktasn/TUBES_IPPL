@@ -20,6 +20,13 @@
         </div>
     </a>
 
+    <!-- Hamburger Menu Toggle Button for Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
     <ul class="nav-links">
         <li>
             <a href="{{ route('home') }}">Beranda</a>

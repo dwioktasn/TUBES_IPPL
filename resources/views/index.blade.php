@@ -80,8 +80,7 @@
     <main class="container">
 
         <!-- FILTER -->
-        <div class="filters-container"
-            style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px;">
+        <div class="filters-container">
 
             <div class="filter-label"
                 style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">
