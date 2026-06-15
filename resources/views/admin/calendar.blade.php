@@ -12,15 +12,15 @@
 
 <div class="content-box">
     <!-- Legend -->
-    <div style="display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #E5E7EB;">
-        <span style="display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: #4B5563;">
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #10B981;"></span> Verified
+    <div style="display: flex; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--slate-200);">
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--slate-600); font-weight: 500;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: inline-block;"></span> Verified
         </span>
-        <span style="display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: #4B5563;">
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #F59E0B;"></span> Pending
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--slate-600); font-weight: 500;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #F59E0B; display: inline-block;"></span> Pending
         </span>
-        <span style="display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: #4B5563;">
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #EF4444;"></span> Rejected
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--slate-600); font-weight: 500;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #EF4444; display: inline-block;"></span> Rejected
         </span>
     </div>
 
@@ -48,12 +48,11 @@
             events: eventsData,
             eventClick: function(info) {
                 // Info.event contains the event data
-                // If there's an URL attached to the event, FullCalendar visits it automatically unless default is prevented
-                // In our case we set URL to the event management page with search filter
+                // URL contains link to the event management page with search filter
             },
             themeSystem: 'standard',
-            height: 700,
-            eventTimeFormat: { // like '14:30:00'
+            height: 600,
+            eventTimeFormat: { // like '14:30'
                 hour: '2-digit',
                 minute: '2-digit',
                 meridiem: false,
@@ -71,50 +70,58 @@
         font-family: 'Inter', sans-serif;
     }
     .fc-theme-standard .fc-scrollgrid {
-        border: 1px solid #E5E7EB;
+        border: 1px solid var(--slate-200);
     }
     .fc-theme-standard th, .fc-theme-standard td {
-        border-color: #E5E7EB;
+        border-color: var(--slate-200);
     }
     .fc .fc-toolbar-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #111827;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--slate-900);
     }
     .fc .fc-button-primary {
         background-color: white;
-        border-color: #D1D5DB;
-        color: #374151;
+        border-color: var(--slate-200);
+        color: var(--slate-600);
         text-transform: capitalize;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 12px;
     }
     .fc .fc-button-primary:hover {
-        background-color: #F9FAFB;
-        border-color: #D1D5DB;
-        color: #111827;
+        background-color: var(--slate-50);
+        border-color: var(--slate-300);
+        color: var(--slate-850);
     }
     .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-        background-color: #F3F4F6;
-        border-color: #D1D5DB;
-        color: #111827;
+        background-color: var(--slate-100);
+        border-color: var(--slate-300);
+        color: var(--slate-900);
     }
     .fc .fc-button-primary:focus {
-        box-shadow: 0 0 0 0.2rem rgba(209, 213, 219, 0.5);
+        box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.15);
     }
     .fc-daygrid-event {
         border-radius: 4px;
         padding: 2px 4px;
-        font-size: 0.8rem;
+        font-size: 0.72rem;
+        font-weight: 600;
         border: none;
     }
     .fc-col-header-cell-cushion {
-        color: #4B5563;
-        font-weight: 500;
-        padding: 8px;
+        color: var(--slate-600);
+        font-weight: 600;
+        font-size: 0.78rem;
+        padding: 6px;
+        text-decoration: none;
     }
     .fc-daygrid-day-number {
-        color: #374151;
+        color: var(--slate-700);
         font-weight: 500;
-        padding: 8px;
+        font-size: 0.78rem;
+        padding: 6px;
+        text-decoration: none;
     }
 </style>
 @endpush

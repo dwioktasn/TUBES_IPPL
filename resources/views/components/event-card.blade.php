@@ -1,5 +1,7 @@
 @php
     $isPast = \Carbon\Carbon::parse($event->event_date)->isPast();
+    $priceLower = !empty($event->price) ? strtolower(trim($event->price)) : '';
+    $isGratis = ($event->price_type === 'gratis' || $priceLower === 'gratis' || $priceLower === 'free' || $priceLower === '0');
 @endphp
 <a href="{{ url('/event/' . $event->slug) }}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
 <div class="event-card" style="height: 100%; {{ $isPast ? 'opacity: 0.8; filter: grayscale(60%);' : '' }}">
@@ -17,7 +19,7 @@
                 <span class="tag-badge tag-tak">TAK</span>
             @endif
             
-            @if($event->price_type === 'gratis')
+            @if($isGratis)
                 <span class="tag-badge tag-gratis">GRATIS</span>
             @else
                 <span class="tag-badge tag-berbayar">BERBAYAR</span>
@@ -74,12 +76,12 @@
                 {{ ucfirst($event->event_type) }}
             </div>
             <div class="event-meta-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{ $isGratis ? 'color: #10B981;' : '' }}">
                     <line x1="12" y1="1" x2="12" y2="23"></line>
                     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
-                <span style="{{ $event->price_type === 'gratis' ? 'color: #10B981; font-weight: 600;' : '' }}">
-                    {{ $event->price_type === 'gratis' ? 'Gratis' : $event->price }}
+                <span style="{{ $isGratis ? 'color: #10B981; font-weight: 600;' : '' }}">
+                    {{ $isGratis ? 'Gratis' : $event->price }}
                 </span>
             </div>
         </div>

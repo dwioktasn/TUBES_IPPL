@@ -3,213 +3,221 @@
 @section('title', 'Detail Event - TelU Events')
 
 @section('content')
-<div class="page-header" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
-    <div class="page-title" style="display: flex; align-items: center; gap: 16px;">
-        <a href="{{ route('admin.events') }}" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #F3F4F6; color: #4B5563; text-decoration: none; font-size: 1.2rem; transition: background 0.2s;">
+<div class="page-header" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+    <div class="page-title" style="display: flex; align-items: center; gap: 12px;">
+        <a href="{{ route('admin.events') }}" style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--slate-100); color: var(--slate-600); text-decoration: none; font-size: 0.95rem; transition: background 0.2s;">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
         <div>
-            <h2 style="margin: 0; font-size: 1.5rem; color: #111827;">Detail Event</h2>
+            <h2 style="margin: 0; font-size: 1.3rem; color: var(--slate-900);">Detail Event</h2>
         </div>
-    </div>
-    
-    <div class="event-actions-top" style="display: flex; gap: 12px;">
-        <a href="{{ route('admin.event.edit', $event->id) }}" class="btn-action" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; text-decoration: none; background: #3B82F6; color: white;">
-            <i class="fa-solid fa-pen-to-square"></i> Edit
-        </a>
-
-        @if($event->status != 'approved')
-        <form action="{{ route('admin.event.approve', $event->id) }}" method="POST" style="margin: 0;">
-            @csrf
-            <button type="submit" class="btn-action" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; background: #10B981; color: white;">
-                <i class="fa-solid fa-check"></i> Approve
-            </button>
-        </form>
-        @endif
-
-        @if($event->status != 'rejected')
-        <form action="{{ route('admin.event.reject', $event->id) }}" method="POST" style="margin: 0;">
-            @csrf
-            <button type="submit" class="btn-action" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; background: #EF4444; color: white;">
-                <i class="fa-solid fa-xmark"></i> Reject
-            </button>
-        </form>
-        @endif
-        
-        <form action="{{ route('admin.event.destroy', $event->id) }}" method="POST" style="margin: 0;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-action" onclick="return confirm('Apakah Anda yakin ingin menghapus event ini?');" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: 1px solid #D1D5DB; background: white; color: #EF4444;">
-                <i class="fa-regular fa-trash-can"></i> Hapus
-            </button>
-        </form>
     </div>
 </div>
 
-<div class="content-box" style="padding: 0; overflow: hidden; background: white; border-radius: 12px; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+<div style="display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start;">
     
-    <!-- Header Status -->
-    <div style="padding: 16px 32px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; display: flex; justify-content: space-between; align-items: center;">
-        <div style="font-size: 0.9rem; color: #6B7280;">Status Event:</div>
-        <div>
-            @if($event->status == 'pending')
-                <span style="padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: #FEF3C7; color: #D97706; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-regular fa-clock"></i> Menunggu Verifikasi</span>
-            @elseif($event->status == 'approved')
-                <span style="padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: #DCFCE7; color: #16A34A; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-regular fa-circle-check"></i> Disetujui</span>
+    <!-- LEFT COLUMN: POSTER & ACTIONS -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Poster Box -->
+        <div class="content-box" style="padding: 0; overflow: hidden; text-align: center; border-radius: 12px;">
+            <div style="position: relative; width: 100%; aspect-ratio: 3/4; background: var(--slate-100);">
+                @if($event->is_tak)
+                    <span style="position: absolute; top: 12px; left: 12px; padding: 4px 10px; font-size: 0.65rem; font-weight: 700; background: var(--telu-red); color: white; border-radius: 999px; letter-spacing: 0.05em; box-shadow: 0 2px 4px rgba(0,0,0,0.15); z-index: 10;">TAK</span>
+                @endif
+                
+                @if($event->poster)
+                    <img src="{{ asset('storage/' . $event->poster) }}" alt="{{ $event->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                @else
+                    <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--slate-400);">
+                        <i class="fa-regular fa-image" style="font-size: 3rem; margin-bottom: 12px;"></i>
+                        <span style="font-size: 0.8rem; font-weight: 500;">No Poster</span>
+                    </div>
+                @endif
+            </div>
+            
+            <!-- Status Ribbon -->
+            <div style="padding: 10px 16px; font-size: 0.8rem; font-weight: 600; text-align: center; border-top: 1px solid var(--slate-200); background: var(--slate-50);">
+                @if($event->status == 'pending')
+                    <span style="color: #D97706;"><i class="fa-regular fa-clock"></i> Pending Verification</span>
+                @elseif($event->status == 'approved')
+                    <span style="color: #10B981;"><i class="fa-regular fa-circle-check"></i> Verified / Published</span>
+                @else
+                    <span style="color: #EF4444;"><i class="fa-regular fa-circle-xmark"></i> Rejected</span>
+                @endif
+            </div>
+        </div>
+
+        <!-- Action Card -->
+        <div class="content-box" style="display: flex; flex-direction: column; gap: 10px; padding: 16px;">
+            <h4 style="margin: 0 0 4px 0; font-size: 0.8rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em;">Aksi Konsol</h4>
+            
+            <a href="{{ route('admin.event.edit', $event->id) }}" class="admin-btn-action admin-btn-detail" style="justify-content: center; padding: 9px;">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Informasi
+            </a>
+
+            @if($event->status != 'approved')
+            <form action="{{ route('admin.event.approve', $event->id) }}" method="POST" style="margin: 0; width: 100%;">
+                @csrf
+                <button type="submit" class="admin-btn-action admin-btn-approve" style="width: 100%; justify-content: center; padding: 9px;">
+                    <i class="fa-solid fa-check"></i> Verifikasi Event
+                </button>
+            </form>
+            @endif
+
+            @if($event->status != 'rejected')
+            <form action="{{ route('admin.event.reject', $event->id) }}" method="POST" style="margin: 0; width: 100%;">
+                @csrf
+                <button type="submit" class="admin-btn-action admin-btn-reject" style="width: 100%; justify-content: center; padding: 9px;">
+                    <i class="fa-solid fa-xmark"></i> Tolak Event
+                </button>
+            </form>
+            @endif
+
+            <div style="margin: 6px 0; border-top: 1px dashed var(--slate-200);"></div>
+
+            <form action="{{ route('admin.event.destroy', $event->id) }}" method="POST" style="margin: 0; width: 100%;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="admin-btn-action admin-btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus event ini?');" style="width: 100%; justify-content: center; padding: 9px;">
+                    <i class="fa-regular fa-trash-can"></i> Hapus Permanen
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN: DETAILED INFO -->
+    <div class="content-box" style="padding: 24px;">
+        <h1 style="font-size: 1.35rem; font-weight: 800; color: var(--slate-900); margin: 0 0 16px 0; line-height: 1.3;">{{ $event->title }}</h1>
+
+        <!-- Info Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; background: var(--slate-50); padding: 16px; border-radius: 8px; border: 1px solid var(--slate-200);">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--telu-red);">
+                    <i class="fa-regular fa-calendar-days" style="font-size: 0.85rem;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--slate-500); font-weight: 600; text-transform: uppercase;">Tanggal & Waktu</div>
+                    <div style="font-weight: 600; color: var(--slate-800); font-size: 0.85rem; margin-top: 2px;">{{ \Carbon\Carbon::parse($event->event_date)->locale('id')->translatedFormat('l, d F Y') }}</div>
+                    <div style="font-size: 0.78rem; color: var(--slate-600); margin-top: 1px;">{{ \Carbon\Carbon::parse($event->event_date)->format('H.i') }} WIB</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--telu-red);">
+                    <i class="fa-solid fa-location-dot" style="font-size: 0.85rem;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--slate-500); font-weight: 600; text-transform: uppercase;">Lokasi</div>
+                    <div style="font-weight: 600; color: var(--slate-800); font-size: 0.85rem; margin-top: 2px;">{{ $event->location }}</div>
+                    <div style="font-size: 0.78rem; color: var(--slate-600); margin-top: 1px;">{{ ucfirst($event->event_type) }}</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--telu-red);">
+                    <i class="fa-solid fa-tags" style="font-size: 0.85rem;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--slate-500); font-weight: 600; text-transform: uppercase;">Kategori</div>
+                    <div style="font-weight: 600; color: var(--slate-800); font-size: 0.85rem; margin-top: 2px;">{{ ucfirst($event->category) }}</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--telu-red);">
+                    <i class="fa-solid fa-users" style="font-size: 0.85rem;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--slate-500); font-weight: 600; text-transform: uppercase;">Target Peserta</div>
+                    <div style="font-weight: 600; color: var(--slate-800); font-size: 0.85rem; margin-top: 2px;">{{ $event->target_participants }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biaya & Nilai TAK -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+            <div style="border: 1px solid var(--slate-200); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; background: white;">
+                <span style="font-size: 0.8rem; color: var(--slate-500); font-weight: 500;">Biaya Pendaftaran</span>
+                @php
+                    $priceLower = !empty($event->price) ? strtolower(trim($event->price)) : '';
+                    $isGratis = ($event->price_type === 'gratis' || $priceLower === 'gratis' || $priceLower === 'free' || $priceLower === '0');
+                @endphp
+                <span style="font-size: 1.05rem; font-weight: 700; color: {{ $isGratis ? '#10B981' : 'var(--slate-900)' }};">
+                    {{ $isGratis ? 'Gratis' : $event->price }}
+                </span>
+            </div>
+
+            @if($event->is_tak)
+            <div style="border: 1px solid #FECACA; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; background: #FEF2F2; color: #991B1B;">
+                <i class="fa-solid fa-bolt" style="color: #DC2626; font-size: 1rem;"></i>
+                <div style="font-size: 0.75rem; line-height: 1.3;">
+                    <strong style="display: block; font-size: 0.78rem;">Memberikan Nilai TAK</strong>
+                    Diakui secara akademis.
+                </div>
+            </div>
             @else
-                <span style="padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: #FEE2E2; color: #DC2626; display: inline-flex; align-items: center; gap: 6px;"><i class="fa-regular fa-circle-xmark"></i> Ditolak</span>
+            <div style="border: 1px solid var(--slate-200); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; background: var(--slate-50); color: var(--slate-500);">
+                <i class="fa-solid fa-ban" style="font-size: 0.9rem;"></i>
+                <div style="font-size: 0.75rem; line-height: 1.3;">
+                    <strong style="display: block; font-size: 0.78rem;">Tidak Ada Nilai TAK</strong>
+                    Hanya berupa event reguler.
+                </div>
+            </div>
             @endif
         </div>
-    </div>
 
-    <!-- Poster Section -->
-    <div style="background: #F3F4F6; width: 100%; display: flex; justify-content: center; align-items: center; padding: 40px 0;">
-        <div style="position: relative; width: 100%; max-width: 320px; aspect-ratio: 3 / 4; background: #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <img src="{{ $event->poster ? asset('storage/' . $event->poster) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }}" style="width: 100%; height: 100%; object-fit: cover;">
-            <div style="position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
-                @if($event->is_tak)
-                    <span style="padding: 6px 16px; font-size: 0.8rem; font-weight: 700; background: #EF4444; color: white; border-radius: 999px; letter-spacing: 0.05em; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">TAK</span>
-                @endif
-                @if($event->price_type === 'gratis')
-                    <span style="padding: 6px 16px; font-size: 0.8rem; font-weight: 700; background: #10B981; color: white; border-radius: 999px; letter-spacing: 0.05em; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">GRATIS</span>
-                @else
-                    <span style="padding: 6px 16px; font-size: 0.8rem; font-weight: 700; background: #F59E0B; color: white; border-radius: 999px; letter-spacing: 0.05em; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">BERBAYAR</span>
-                @endif
-            </div>
-        </div>
-    </div>
-
-    <!-- Content Section -->
-    <div style="padding: 32px; max-width: 800px; margin: 0 auto;">
-        <!-- Header -->
-        <div style="margin-bottom: 32px; text-align: center;">
-            <h1 style="font-size: 2rem; font-weight: 800; color: #111827; margin: 0 0 16px 0; line-height: 1.3;">{{ $event->title }}</h1>
-        </div>
-
-        <!-- Grid Info -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; background: #F9FAFB; padding: 24px; border-radius: 12px; border: 1px solid #F3F4F6;">
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i class="fa-regular fa-calendar-days" style="color: #EF4444; font-size: 1.1rem;"></i>
-                </div>
-                <div>
-                    <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 4px; font-weight: 500;">Tanggal & Waktu</div>
-                    <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ \Carbon\Carbon::parse($event->event_date)->locale('id')->translatedFormat('l, d F Y') }}</div>
-                    <div style="font-size: 0.85rem; color: #4B5563; margin-top: 2px;">{{ \Carbon\Carbon::parse($event->event_date)->format('H.i') }} WIB</div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i class="fa-solid fa-location-dot" style="color: #EF4444; font-size: 1.1rem;"></i>
-                </div>
-                <div>
-                    <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 4px; font-weight: 500;">Lokasi</div>
-                    <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ $event->location }}</div>
-                    @if($event->event_type)
-                    <div style="font-size: 0.85rem; color: #4B5563; margin-top: 2px;">{{ ucfirst($event->event_type) }}</div>
-                    @endif
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i class="fa-solid fa-tags" style="color: #EF4444; font-size: 1.1rem;"></i>
-                </div>
-                <div>
-                    <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 4px; font-weight: 500;">Kategori</div>
-                    <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ ucfirst($event->category) }}</div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 16px; align-items: flex-start;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i class="fa-solid fa-users" style="color: #EF4444; font-size: 1.1rem;"></i>
-                </div>
-                <div>
-                    <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 4px; font-weight: 500;">Target Peserta</div>
-                    <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ $event->target_participants }}</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Biaya Pendaftaran -->
-        <div style="background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 0.9rem; color: #6B7280; font-weight: 500;">Biaya Pendaftaran</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #111827;">
-                @if($event->price_type === 'gratis')
-                    FREE
-                @else
-                    {{ $event->price }}
-                @endif
-            </div>
-        </div>
-
-        <!-- TAK -->
-        @if($event->is_tak)
-        <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px; padding: 20px; margin-bottom: 32px; display: flex; gap: 16px; align-items: flex-start;">
-            <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <i class="fa-solid fa-bolt" style="color: #DC2626; font-size: 1.1rem;"></i>
-            </div>
-            <div>
-                <div style="font-weight: 700; font-size: 1rem; color: #B91C1C; margin-bottom: 6px;">Event Memberikan Nilai TAK</div>
-                <div style="font-size: 0.9rem; color: #991B1B; line-height: 1.5;">Event ini memberikan nilai Tri Dharma Aktivitas Kemahasiswaan (TAK) yang dapat digunakan untuk memenuhi syarat kelulusan di Telkom University.</div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Tentang Event -->
-        <div style="margin-bottom: 32px;">
-            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #111827; border-bottom: 2px solid #F3F4F6; padding-bottom: 8px; display: inline-block;">Deskripsi Event</h3>
-            <div style="color: #4B5563; line-height: 1.7; font-size: 0.95rem; text-align: justify;">
+        <!-- Deskripsi Event -->
+        <div style="margin-bottom: 24px;">
+            <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; color: var(--slate-800); border-bottom: 2px solid var(--slate-100); padding-bottom: 6px; display: inline-block;">Deskripsi Event</h3>
+            <div style="color: var(--slate-600); line-height: 1.6; font-size: 0.85rem; text-align: justify; white-space: pre-line;">
                 {!! nl2br(e($event->description)) !!}
             </div>
         </div>
 
         <!-- Penyelenggara & Link -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-            <div style="background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 24px;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111827;">Informasi Penyelenggara</h3>
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <div style="display: flex; gap: 16px; align-items: center;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="fa-solid fa-sitemap" style="color: #6B7280; font-size: 0.9rem;"></i>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <!-- Penyelenggara -->
+            <div style="border: 1px solid var(--slate-200); border-radius: 8px; padding: 16px; background: white;">
+                <h4 style="font-size: 0.8rem; font-weight: 700; margin: 0 0 12px 0; color: var(--slate-800);">Penyelenggara</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--slate-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--slate-500);">
+                            <i class="fa-solid fa-sitemap" style="font-size: 0.75rem;"></i>
                         </div>
-                        <div>
-                            <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 2px; font-weight: 500;">Diselenggarakan oleh</div>
-                            <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ $event->organizer_name }}</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-700); font-weight: 500;">
+                            {{ $event->organizer_name }}
                         </div>
                     </div>
-                    <div style="display: flex; gap: 16px; align-items: center;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="fa-solid fa-phone" style="color: #6B7280; font-size: 0.9rem;"></i>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--slate-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--slate-500);">
+                            <i class="fa-solid fa-phone" style="font-size: 0.75rem;"></i>
                         </div>
-                        <div>
-                            <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 2px; font-weight: 500;">Kontak</div>
-                            <div style="font-weight: 600; color: #111827; font-size: 0.95rem;">{{ $event->contact_person }}</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-700); font-weight: 500;">
+                            {{ $event->contact_person }}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div style="background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: center;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #111827;">Link Pendaftaran</h3>
-                <p style="font-size: 0.9rem; color: #6B7280; margin-bottom: 16px; line-height: 1.5;">Peserta akan diarahkan ke link berikut saat mendaftar:</p>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <input type="text" value="{{ $event->registration_link }}" readonly style="flex: 1; padding: 10px 16px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 0.9rem; color: #374151; background: #F9FAFB;">
-                    <a href="{{ str_starts_with($event->registration_link, 'http') ? $event->registration_link : 'http://' . $event->registration_link }}" target="_blank" style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #F3F4F6; color: #4B5563; border-radius: 6px; border: 1px solid #D1D5DB; text-decoration: none;" title="Buka Link">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
+            <!-- Link Pendaftaran -->
+            <div style="border: 1px solid var(--slate-200); border-radius: 8px; padding: 16px; background: white; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h4 style="font-size: 0.8rem; font-weight: 700; margin: 0 0 4px 0; color: var(--slate-800);">Link Registrasi</h4>
+                    <p style="font-size: 0.72rem; color: var(--slate-500); margin: 0 0 10px 0;">URL pendaftaran bagi peserta:</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    @if($event->registration_link)
+                        <input type="text" value="{{ $event->registration_link }}" readonly style="flex: 1; padding: 8px 12px; border: 1px solid var(--slate-200); border-radius: 6px; font-size: 0.78rem; color: var(--slate-600); background: var(--slate-50); outline: none;">
+                        <a href="{{ str_starts_with($event->registration_link, 'http') ? $event->registration_link : 'http://' . $event->registration_link }}" target="_blank" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--slate-100); color: var(--slate-600); border-radius: 6px; border: 1px solid var(--slate-200); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='var(--slate-200)'" onmouseout="this.style.background='var(--slate-100)'" title="Buka Link">
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem;"></i>
+                        </a>
+                    @else
+                        <input type="text" value="Langsung Datang ke Lokasi (Walk-in)" readonly style="flex: 1; padding: 8px 12px; border: 1px dashed var(--slate-300); border-radius: 6px; font-size: 0.78rem; color: var(--slate-500); background: var(--slate-50); outline: none; font-style: italic;">
+                    @endif
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-
-<style>
-    .btn-action:hover {
-        opacity: 0.9;
-    }
-</style>
 @endsection

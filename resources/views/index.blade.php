@@ -82,8 +82,7 @@
         <!-- FILTER -->
         <div class="filters-container">
 
-            <div class="filter-label"
-                style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">
+            <div class="filter-label">
 
                 <svg width="16"
                     height="16"
@@ -101,13 +100,15 @@
                 Filter:
             </div>
 
-            <div class="filters-bar" style="margin-bottom: 0;">
+            <div class="filters-bar">
 
                 <select class="filter-select" name="category" form="searchForm">
                     <option value="">Semua Kategori</option>
                     <option value="seminar" {{ request('category') == 'seminar' ? 'selected' : '' }}>Seminar</option>
                     <option value="workshop" {{ request('category') == 'workshop' ? 'selected' : '' }}>Workshop</option>
                     <option value="kompetisi" {{ request('category') == 'kompetisi' ? 'selected' : '' }}>Kompetisi</option>
+                    <option value="kepanitiaan" {{ request('category') == 'kepanitiaan' ? 'selected' : '' }}>Kepanitiaan</option>
+                    <option value="lainnya" {{ request('category') == 'lainnya' ? 'selected' : '' }}>Lainnya</option>
                 </select>
 
                 <select class="filter-select" name="event_type" form="searchForm">
@@ -138,38 +139,6 @@
             </div>
         </div>
 
-        <!-- SECTION HEADER -->
-        <div class="section-header"
-            style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px;">
-
-            <svg width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--primary-red)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round">
-
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-
-            </svg>
-
-            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin: 0;">
-                Event Terverifikasi
-            </h2>
-
-            <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">
-                ({{ count($events) }} event)
-            </span>
-        </div>
-
         <!-- EVENTS -->
         <div id="events-container" style="position: relative; min-height: 300px;">
             <!-- Loading Overlay -->
@@ -178,42 +147,45 @@
             </div>
             
             <div id="events-content" style="transition: opacity 0.2s;">
-                @php
-                    $upcomingEvents = $events->filter(function($e) { return !\Carbon\Carbon::parse($e->event_date)->isPast(); });
-                    $pastEvents = $events->filter(function($e) { return \Carbon\Carbon::parse($e->event_date)->isPast(); });
-                @endphp
+                <!-- SECTION HEADER -->
+                <div class="section-header"
+                    style="display: flex; align-items: center; gap: 12px; margin-bottom: 40px;">
+
+                    <svg width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="var(--primary-red)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+
+                    </svg>
+
+                    <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin: 0;">
+                        Event Tersedia
+                    </h2>
+
+                    <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">
+                        ({{ count($events) }} event)
+                    </span>
+                </div>
 
                 @if(count($events) > 0)
 
-                    @if(count($upcomingEvents) > 0)
                     <div class="events-grid">
-                        @foreach ($upcomingEvents as $event)
+                        @foreach ($events as $event)
                             @include('components.event-card', ['event' => $event])
                         @endforeach
                     </div>
-                    @endif
-
-                    @if(count($pastEvents) > 0)
-                    <!-- PAST EVENTS HEADER -->
-                    <div class="section-header" style="display: flex; align-items: center; gap: 12px; margin: 60px 0 30px;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <h2 style="font-size: 1.25rem; font-weight: 700; color: #4B5563; margin: 0;">
-                            Event Yang Sudah Selesai
-                        </h2>
-                        <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">
-                            ({{ count($pastEvents) }} event)
-                        </span>
-                    </div>
-                    
-                    <div class="events-grid">
-                        @foreach ($pastEvents as $event)
-                            @include('components.event-card', ['event' => $event])
-                        @endforeach
-                    </div>
-                    @endif
 
                 @else
 
@@ -231,7 +203,7 @@
                             Belum ada event
                         </h3>
                         <p class="text-muted" style="color: var(--text-muted); font-size: 0.95rem;">
-                            Event yang sudah terverifikasi akan muncul di sini
+                            Event yang tersedia akan muncul di sini
                         </p>
                     </div>
 

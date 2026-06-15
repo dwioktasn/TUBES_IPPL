@@ -83,7 +83,7 @@ class AdminController extends Controller
         $user->otp_expired_at = null;
         $user->save();
 
-        return redirect('/admin/dashboard');
+        return redirect('/admin/events');
     }
 
     public function dashboard(Request $request)
@@ -142,11 +142,12 @@ class AdminController extends Controller
             return \Carbon\Carbon::parse($event->event_date)->isPast() ? 1 : 0;
         })->values();
 
+        $totalCount = Event::count();
         $pendingCount = Event::where('status', 'pending')->count();
         $verifiedCount = Event::where('status', 'approved')->count();
         $rejectedCount = Event::where('status', 'rejected')->count();
 
-        return view('admin.events', compact('events', 'pendingCount', 'verifiedCount', 'rejectedCount'));
+        return view('admin.events', compact('events', 'totalCount', 'pendingCount', 'verifiedCount', 'rejectedCount'));
     }
 
     public function calendar()
@@ -199,7 +200,7 @@ class AdminController extends Controller
         }
 
         $request->validate([
-            'registration_link' => 'required|url',
+            'registration_link' => 'nullable|url',
         ]);
 
         if (strtotime($request->event_date) < time()) {
@@ -222,7 +223,11 @@ class AdminController extends Controller
             'event_type' => $request->event_type,
             'event_date' => $request->event_date,
             'location' => $request->location,
-            'price_type' => strtoupper($request->price) === 'FREE' ? 'gratis' : 'berbayar',
+            'price_type' => (
+                str_contains(strtoupper($request->price), 'FREE') ||
+                str_contains(strtoupper($request->price), 'GRATIS') ||
+                trim($request->price) === '0'
+            ) ? 'gratis' : 'berbayar',
             'price' => $request->price,
             'target_participants' => $request->target_participants,
             'registration_link' => $request->registration_link,
@@ -258,7 +263,7 @@ class AdminController extends Controller
         $event = Event::findOrFail($id);
 
         $request->validate([
-            'registration_link' => 'required|url',
+            'registration_link' => 'nullable|url',
         ]);
 
         $posterPath = $event->poster;
@@ -278,7 +283,11 @@ class AdminController extends Controller
             'event_type' => $request->event_type,
             'event_date' => $request->event_date,
             'location' => $request->location,
-            'price_type' => strtoupper($request->price) === 'FREE' ? 'gratis' : 'berbayar',
+            'price_type' => (
+                str_contains(strtoupper($request->price), 'FREE') ||
+                str_contains(strtoupper($request->price), 'GRATIS') ||
+                trim($request->price) === '0'
+            ) ? 'gratis' : 'berbayar',
             'price' => $request->price,
             'target_participants' => $request->target_participants,
             'registration_link' => $request->registration_link,
@@ -339,7 +348,7 @@ class AdminController extends Controller
         $event = Event::findOrFail($id);
         $event->delete();
 
-        return back()->with('success', 'Event berhasil dihapus!');
+        return redirect()->route('admin.events')->with('success', 'Event berhasil dihapus!');
     }
 
     public function logout()

@@ -36,9 +36,12 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
         $query->where('prodi', $request->prodi);
     }
 
-    $events = $query->latest()->get()->sortBy(function($event) {
-        return \Carbon\Carbon::parse($event->event_date)->isPast() ? 1 : 0;
-    })->values();
+    $events = $query->get()
+        ->filter(function($event) {
+            return !\Carbon\Carbon::parse($event->event_date)->isPast();
+        })
+        ->sortBy('event_date')
+        ->values();
 
     return view('index', compact('events'));
 })->name('home');
@@ -65,6 +68,17 @@ Route::get('/submit-event', function () {
 Route::post('/submit-event', [EventController::class, 'store'])
     ->name('events.store');
 
+Route::get('/submit-success', function () {
+    return view('submit_success');
+})->name('submit-success');
+
+Route::post('/api/extract-poster', [EventController::class, 'extractPoster'])
+    ->name('events.extract');
+
+Route::post('/api/chat', [EventController::class, 'chat'])
+    ->name('events.chat');
+
+
 // LOGIN ADMIN
 Route::get('/admin/login', [AdminController::class, 'login'])
     ->name('admin.login');
@@ -75,8 +89,9 @@ Route::post('/admin/verify-otp', [AdminController::class, 'verifyOtp']);
 
 
 // DASHBOARD ADMIN
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
-    ->name('admin.dashboard');
+Route::get('/admin/dashboard', function () {
+    return redirect()->route('admin.events');
+})->name('admin.dashboard');
 
 Route::get('/admin/events', [AdminController::class, 'events'])
     ->name('admin.events');

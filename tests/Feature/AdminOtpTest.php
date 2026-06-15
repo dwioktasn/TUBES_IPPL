@@ -87,6 +87,6 @@ class AdminOtpTest extends TestCase
             'otp' => '123456'
         ]);
 
-        $response->assertRedirect('/admin/dashboard');
+        $response->assertRedirect('/admin/events');
     }
 }
